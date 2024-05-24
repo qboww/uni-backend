@@ -35,10 +35,14 @@ const router = express.Router();
  *         number:
  *           type: string
  *           description: The phone number of the contact
+ *         userId:
+ *           type: string
+ *           description: The ID of the user who owns the contact
  *       example:
  *         id: d5fE_asz
  *         name: John Doe
  *         number: 123-456-7890
+ *         userId: 665107162b0172c230e6470f
  */
 
 /**
