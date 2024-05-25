@@ -5,7 +5,7 @@ const {
   logoutUser,
   getCurrentUser,
 } = require("../controllers/authController");
-const { protect } = require("../middleware/authMiddleware");
+const { protect, admin } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 /**
@@ -28,10 +28,15 @@ const router = express.Router();
  *         password:
  *           type: string
  *           description: The user's password
+ *         role:
+ *           type: string
+ *           description: The user's role
+ *           enum: [user, admin]
  *       example:
  *         name: John Doe
  *         email: john.doe@example.com
  *         password: password123
+ *         role: user
  */
 
 /**
@@ -142,5 +147,33 @@ router.post("/logout", logoutUser);
  */
 
 router.get("/current", protect, getCurrentUser);
+
+/**
+ * @swagger
+ * /users/admin:
+ *   get:
+ *     summary: Get admin content
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Admin content
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Admin content
+ *       403:
+ *         description: Not authorized as an admin
+ *       401:
+ *         description: Not authorized, token failed
+ *       500:
+ *         description: Some server error
+ */
+
+router.get("/admin", protect, admin, (req, res) => {
+  res.send("Admin content");
+});
 
 module.exports = router;
