@@ -1,4 +1,5 @@
-const Contact = require("../models/contact");
+// contactController.js
+const Contact = require("../models/contactModel");
 
 exports.getContacts = async (req, res) => {
   try {
@@ -10,7 +11,6 @@ exports.getContacts = async (req, res) => {
 };
 
 exports.getAllContacts = async (req, res) => {
-  // Ensure this function is implemented
   try {
     const contacts = await Contact.find();
     res.json(contacts);
