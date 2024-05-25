@@ -9,6 +9,16 @@ exports.getContacts = async (req, res) => {
   }
 };
 
+exports.getAllContacts = async (req, res) => {
+  // Ensure this function is implemented
+  try {
+    const contacts = await Contact.find();
+    res.json(contacts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.addContact = async (req, res) => {
   const { name, number } = req.body;
   const userId = req.user.id;

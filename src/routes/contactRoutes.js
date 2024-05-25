@@ -1,10 +1,11 @@
 const express = require("express");
-const { protect } = require("../middleware/authMiddleware");
+const { protect, admin } = require("../middleware/authMiddleware");
 const {
   getContacts,
   addContact,
   updateContact,
   deleteContact,
+  getAllContacts,
 } = require("../controllers/contactController");
 
 const router = express.Router();
@@ -154,7 +155,7 @@ const router = express.Router();
  */
 
 router.route("/").get(protect, getContacts).post(protect, addContact);
-
+router.route("/admin").get(protect, admin, getAllContacts); // Ensure this route is defined
 router
   .route("/:id")
   .patch(protect, updateContact)
