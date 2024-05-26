@@ -1,12 +1,12 @@
 // server.js
 const express = require("express");
-const connectDB = require("./config/db");
-const authRoutes = require("./routes/authRoutes");
-const contactRoutes = require("./routes/contactRoutes");
+const connectDB = require("./src/config/db");
+const authRoutes = require("./src/routes/authRoutes");
+const contactRoutes = require("./src/routes/contactRoutes");
 const bodyParser = require("body-parser");
-const swaggerSetup = require("./swagger");
+const swaggerSetup = require("./src/swagger");
 const cors = require("cors");
-const { eventsHandler } = require("./sseManager");
+const { eventsHandler } = require("./src/sseManager");
 
 const app = express();
 connectDB();
