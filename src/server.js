@@ -6,6 +6,7 @@ const contactRoutes = require("./routes/contactRoutes");
 const bodyParser = require("body-parser");
 const swaggerSetup = require("./swagger");
 const cors = require("cors");
+const { eventsHandler } = require("./sseManager");
 
 const app = express();
 connectDB();
@@ -20,6 +21,8 @@ app.use(bodyParser.json());
 
 app.use("/users", authRoutes);
 app.use("/contacts", contactRoutes);
+
+app.get("/events", eventsHandler);
 
 swaggerSetup(app);
 
