@@ -2,7 +2,8 @@
 const express = require("express");
 const connectDB = require("./src/config/db");
 const authRoutes = require("./src/routes/authRoutes");
-const taskRoutes = require("./src/routes/taskRoutes"); 
+const taskRoutes = require("./src/routes/taskRoutes");
+const userRoutes = require("./src/routes/userRoutes"); // Add this line
 const bodyParser = require("body-parser");
 const swaggerSetup = require("./src/swagger");
 const cors = require("cors");
@@ -20,7 +21,8 @@ app.use(
 app.use(bodyParser.json());
 
 app.use("/users", authRoutes);
-app.use("/tasks", taskRoutes); 
+app.use("/tasks", taskRoutes);
+app.use("/users", userRoutes); // Add this line
 
 app.get("/events", eventsHandler);
 
