@@ -5,9 +5,9 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Auth and Contacts API",
+      title: "University Tracker API",
       version: "1.0.0",
-      description: "A simple Express Auth and Contacts API",
+      description: "A simple Express University Tracker API",
     },
     servers: [
       {
@@ -29,7 +29,7 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/*.js"],
+  apis: ["./src/routes/*.js", "./src/models/*.js"],
 };
 
 const specs = swaggerJsdoc(options);
