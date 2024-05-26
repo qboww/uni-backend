@@ -2,7 +2,7 @@
 const express = require("express");
 const connectDB = require("./src/config/db");
 const authRoutes = require("./src/routes/authRoutes");
-const contactRoutes = require("./src/routes/contactRoutes");
+const taskRoutes = require("./src/routes/taskRoutes"); 
 const bodyParser = require("body-parser");
 const swaggerSetup = require("./src/swagger");
 const cors = require("cors");
@@ -20,7 +20,7 @@ app.use(
 app.use(bodyParser.json());
 
 app.use("/users", authRoutes);
-app.use("/contacts", contactRoutes);
+app.use("/tasks", taskRoutes); 
 
 app.get("/events", eventsHandler);
 
