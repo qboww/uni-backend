@@ -11,6 +11,26 @@ exports.getTasks = async (req, res) => {
   }
 };
 
+exports.getPaginatedTasks = async (req, res) => {
+  const { page = 1, limit = 3 } = req.query;
+  try {
+    const tasks = await Task.find({ userId: req.user.id })
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .exec();
+
+    const count = await Task.countDocuments({ userId: req.user.id });
+
+    res.json({
+      tasks,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.find();
@@ -112,6 +132,22 @@ exports.deleteTask = async (req, res) => {
       payload: { id: deletedTask._id },
     });
     res.json({ id: deletedTask._id });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.searchTasks = async (req, res) => {
+  const { query } = req.query;
+  try {
+    const tasks = await Task.find({
+      userId: req.user.id,
+      $or: [
+        { taskName: { $regex: query, $options: "i" } },
+        { taskDescription: { $regex: query, $options: "i" } },
+      ],
+    });
+    res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
