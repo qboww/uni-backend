@@ -76,46 +76,26 @@ exports.addTask = async (req, res) => {
 };
 exports.updateTask = async (req, res) => {
   const { id } = req.params;
-  const {
-    courseName,
-    taskName,
-    taskDescription,
-    deadlineDate,
-    mark,
-    state,
-    userId,
-  } = req.body;
+  const { taskName, taskDescription, deadlineDate, mark, state } = req.body;
+
+  if (!taskName || !taskDescription || !deadlineDate || !mark || !state) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
 
   try {
-    const task = await Task.findById(id);
+    const task = await Task.findByIdAndUpdate(
+      id,
+      { taskName, taskDescription, deadlineDate, mark, state },
+      { new: true }
+    );
+
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    if (req.user.role !== "admin" && req.user.id !== task.userId.toString()) {
-      return res
-        .status(403)
-        .json({ message: "Not authorized to update this task" });
-    }
-
-    const updatedTask = await Task.findByIdAndUpdate(
-      id,
-      {
-        courseName,
-        taskName,
-        taskDescription,
-        deadlineDate,
-        mark,
-        state,
-        userId: req.user.role === "admin" ? userId : task.userId,
-      },
-      { new: true }
-    );
-
-    sendEventToAll({ type: "UPDATE_TASK", payload: updatedTask });
-    res.json(updatedTask);
+    res.json(task);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
