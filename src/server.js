@@ -3,6 +3,7 @@ const express = require("express");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const cakeRoutes = require("./routes/cakeRoutes");
+const ingredientRoutes = require("./routes/ingredientRoutes");
 const bodyParser = require("body-parser");
 const swaggerSetup = require("./swagger");
 const cors = require("cors");
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 app.use("/users", authRoutes);
 app.use("/cakes", cakeRoutes);
 app.get("/events", eventsHandler);
+app.use("/ingredients", ingredientRoutes);
 
 swaggerSetup(app);
 

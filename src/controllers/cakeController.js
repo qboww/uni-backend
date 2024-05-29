@@ -1,15 +1,6 @@
 // cakeController.js
 const Cake = require("../models/cakeModel");
 
-exports.getCakes = async (req, res) => {
-  try {
-    const cakes = await Cake.find();
-    res.json(cakes);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 exports.addCake = async (req, res) => {
   const { name, category, weight, price } = req.body;
   try {
@@ -57,13 +48,31 @@ exports.deleteCake = async (req, res) => {
 };
 
 exports.getCakes = async (req, res) => {
-  const { page = 1, limit = 6 } = req.query;
+  const {
+    page = 1,
+    limit = 6,
+    sortBy = "name",
+    order = "asc",
+    search = "",
+    ingredients = "",
+  } = req.query;
   try {
-    const cakes = await Cake.find()
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
+    let query = {};
+
+    if (search) {
+      query.name = { $regex: search, $options: "i" }; // case-insensitive search by name
+    }
+
+    if (ingredients) {
+      query.components = { $all: ingredients.split(",") }; // filter by ingredients
+    }
+
+    const allCakes = await Cake.find(query)
+      .sort({ [sortBy]: order === "asc" ? 1 : -1 })
       .exec();
-    const count = await Cake.countDocuments();
+    const count = allCakes.length;
+
+    const cakes = allCakes.slice((page - 1) * limit, page * limit);
 
     res.json({
       cakes,
