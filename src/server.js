@@ -1,13 +1,12 @@
 // server.js
 const express = require("express");
-const connectDB = require("./src/config/db");
-const authRoutes = require("./src/routes/authRoutes");
-const taskRoutes = require("./src/routes/taskRoutes");
-const userRoutes = require("./src/routes/userRoutes");
+const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
+const cakeRoutes = require("./routes/cakeRoutes");
 const bodyParser = require("body-parser");
-const swaggerSetup = require("./src/swagger");
+const swaggerSetup = require("./swagger");
 const cors = require("cors");
-const { eventsHandler } = require("./src/sseManager");
+const { eventsHandler } = require("./sseManager");
 
 const app = express();
 connectDB();
@@ -21,13 +20,10 @@ app.use(
 app.use(bodyParser.json());
 
 app.use("/users", authRoutes);
-app.use("/tasks", taskRoutes);
-app.use("/users", userRoutes);
-
+app.use("/cakes", cakeRoutes);
 app.get("/events", eventsHandler);
 
 swaggerSetup(app);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
