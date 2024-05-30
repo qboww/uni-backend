@@ -1,4 +1,3 @@
-// swagger.js
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
@@ -6,9 +5,9 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "University Tracker API",
+      title: "Bakery API",
       version: "1.0.0",
-      description: "A simple Express University Tracker API",
+      description: "A simple Express Bakery API",
     },
     servers: [
       {
@@ -30,7 +29,7 @@ const options = {
       },
     ],
   },
-  apis: ["./src/routes/*.js", "./src/models/*.js"],
+  apis: ["./routes/*.js"], // Adjust the path as necessary
 };
 
 const specs = swaggerJsdoc(options);
